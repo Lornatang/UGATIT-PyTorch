@@ -183,41 +183,45 @@ for epoch in range(0, args.epochs):
         D_real_adversarial_loss_GA = adversarial_loss(real_output_GA, torch.ones_like(real_output_GA, device=device))
         D_fake_adversarial_loss_GA = adversarial_loss(fake_output_GA, torch.zeros_like(fake_output_GA, device=device))
         D_adversarial_loss_GA = D_real_adversarial_loss_GA + D_fake_adversarial_loss_GA
+
         D_real_adversarial_loss_GB = adversarial_loss(real_output_GB, torch.ones_like(real_output_GB, device=device))
         D_fake_adversarial_loss_GB = adversarial_loss(fake_output_GB, torch.zeros_like(fake_output_GB, device=device))
         D_adversarial_loss_GB = D_real_adversarial_loss_GB + D_fake_adversarial_loss_GB
 
-        D_real_adversarial_loss_cam_GA = adversarial_loss(real_output_GA_cam,
+        D_real_adversarial_loss_GA_cam = adversarial_loss(real_output_GA_cam,
                                                           torch.ones_like(real_output_GA_cam, device=device))
-        D_fake_adversarial_loss_cam_GA = adversarial_loss(fake_output_GA_cam,
+        D_fake_adversarial_loss_GA_cam = adversarial_loss(fake_output_GA_cam,
                                                           torch.zeros_like(fake_output_GA_cam, device=device))
-        D_adversarial_loss_cam_GA = D_real_adversarial_loss_cam_GA + D_fake_adversarial_loss_cam_GA
-        D_real_adversarial_loss_cam_GB = adversarial_loss(real_output_GB_cam,
+        D_adversarial_loss_GA_cam = D_real_adversarial_loss_GA_cam + D_fake_adversarial_loss_GA_cam
+
+        D_real_adversarial_loss_GB_cam = adversarial_loss(real_output_GB_cam,
                                                           torch.ones_like(real_output_GB_cam, device=device))
-        D_fake_adversarial_loss_cam_GB = adversarial_loss(fake_output_GB_cam,
+        D_fake_adversarial_loss_GB_cam = adversarial_loss(fake_output_GB_cam,
                                                           torch.zeros_like(fake_output_GB_cam, device=device))
-        D_adversarial_loss_cam_GB = D_real_adversarial_loss_cam_GB + D_fake_adversarial_loss_cam_GB
+        D_adversarial_loss_GB_cam = D_real_adversarial_loss_GB_cam + D_fake_adversarial_loss_GB_cam
 
         D_real_adversarial_loss_LA = adversarial_loss(real_output_LA, torch.ones_like(real_output_LA, device=device))
         D_fake_adversarial_loss_LA = adversarial_loss(fake_output_LA, torch.zeros_like(fake_output_LA, device=device))
         D_adversarial_loss_LA = D_real_adversarial_loss_LA + D_fake_adversarial_loss_LA
+
         D_real_adversarial_loss_LB = adversarial_loss(real_output_LB, torch.ones_like(real_output_LB, device=device))
         D_fake_adversarial_loss_LB = adversarial_loss(fake_output_LB, torch.zeros_like(fake_output_LB, device=device))
         D_adversarial_loss_LB = D_real_adversarial_loss_LB + D_fake_adversarial_loss_LB
 
-        D_real_adversarial_loss_cam_LA = adversarial_loss(real_output_LA_cam,
+        D_real_adversarial_loss_LA_cam = adversarial_loss(real_output_LA_cam,
                                                           torch.ones_like(real_output_LA_cam, device=device))
-        D_fake_adversarial_loss_cam_LA = adversarial_loss(fake_output_LA_cam,
+        D_fake_adversarial_loss_LA_cam = adversarial_loss(fake_output_LA_cam,
                                                           torch.zeros_like(fake_output_LA_cam, device=device))
-        D_adversarial_loss_cam_LA = D_real_adversarial_loss_cam_LA + D_fake_adversarial_loss_cam_LA
-        D_real_adversarial_loss_cam_LB = adversarial_loss(real_output_LB_cam,
-                                                          torch.ones_like(real_output_LB_cam, device=device))
-        D_fake_adversarial_loss_cam_LB = adversarial_loss(fake_output_LB_cam,
-                                                          torch.zeros_like(fake_output_LB_cam, device=device))
-        D_adversarial_loss_cam_LB = D_real_adversarial_loss_cam_LB + D_fake_adversarial_loss_cam_LB
+        D_adversarial_loss_LA_cam = D_real_adversarial_loss_LA_cam + D_fake_adversarial_loss_LA_cam
 
-        loss_D_A = D_adversarial_loss_GA + D_adversarial_loss_cam_GA + D_adversarial_loss_LA + D_adversarial_loss_cam_LA
-        loss_D_B = D_adversarial_loss_GB + D_adversarial_loss_cam_GB + D_adversarial_loss_LB + D_adversarial_loss_cam_LB
+        D_real_adversarial_loss_LB_cam = adversarial_loss(real_output_LB_cam,
+                                                          torch.ones_like(real_output_LB_cam, device=device))
+        D_fake_adversarial_loss_LB_cam = adversarial_loss(fake_output_LB_cam,
+                                                          torch.zeros_like(fake_output_LB_cam, device=device))
+        D_adversarial_loss_LB_cam = D_real_adversarial_loss_LB_cam + D_fake_adversarial_loss_LB_cam
+
+        loss_D_A = D_adversarial_loss_GA + D_adversarial_loss_GA_cam + D_adversarial_loss_LA + D_adversarial_loss_LA_cam
+        loss_D_B = D_adversarial_loss_GB + D_adversarial_loss_GB_cam + D_adversarial_loss_LB + D_adversarial_loss_LB_cam
 
         errD = loss_D_A + loss_D_B
         errD.backward()
@@ -226,14 +230,14 @@ for epoch in range(0, args.epochs):
         # Update G
         optimizer_G.zero_grad()
 
-        fake_image_B, fake_image_B_cam_output = netG_A2B(real_image_A)
-        fake_image_A, fake_image_A_cam_output = netG_B2A(real_image_B)
+        fake_image_B, fake_image_B_cam = netG_A2B(real_image_A)
+        fake_image_A, fake_image_A_cam = netG_B2A(real_image_B)
 
         fake_image_B2A, _ = netG_B2A(fake_image_B.detach())
         fake_image_A2B, _ = netG_A2B(fake_image_A.detach())
 
-        fake_image_A2A, fake_image_A2A_cam_output = netG_B2A(real_image_A)
-        fake_image_B2B, fake_image_B2B_cam_output = netG_A2B(real_image_B)
+        fake_image_A2A, fake_output_A2A_cam = netG_B2A(real_image_A)
+        fake_image_B2B, fake_output_B2B_cam = netG_A2B(real_image_B)
 
         fake_output_GA, fake_output_GA_cam = netD_A(fake_image_A.detach())
         fake_output_LA, fake_output_LA_cam = netL_A(fake_image_A.detach())
@@ -241,16 +245,16 @@ for epoch in range(0, args.epochs):
         fake_output_LB, fake_output_LB_cam = netL_B(fake_image_B.detach())
 
         G_adversarial_loss_GA = adversarial_loss(fake_output_GA, torch.ones_like(fake_output_GA, device=device))
-        G_adversarial_loss_cam_GA = adversarial_loss(fake_output_GA_cam,
+        G_adversarial_loss_GA_cam = adversarial_loss(fake_output_GA_cam,
                                                      torch.ones_like(fake_output_GA_cam, device=device))
         G_adversarial_loss_LA = adversarial_loss(fake_output_LA, torch.ones_like(fake_output_LA, device=device))
-        G_adversarial_loss_cam_LA = adversarial_loss(fake_output_GA_cam,
+        G_adversarial_loss_LA_cam = adversarial_loss(fake_output_GA_cam,
                                                      torch.ones_like(fake_output_GA_cam, device=device))
         G_adversarial_loss_GB = adversarial_loss(fake_output_GB, torch.ones_like(fake_output_GB, device=device))
-        G_adversarial_loss_cam_GB = adversarial_loss(fake_output_GB_cam,
+        G_adversarial_loss_GB_cam = adversarial_loss(fake_output_GB_cam,
                                                      torch.ones_like(fake_output_GB_cam, device=device))
         G_adversarial_loss_LB = adversarial_loss(fake_output_LB, torch.ones_like(fake_output_LB, device=device))
-        G_adversarial_loss_cam_LB = adversarial_loss(fake_output_LB_cam,
+        G_adversarial_loss_LB_cam = adversarial_loss(fake_output_LB_cam,
                                                      torch.ones_like(fake_output_LB_cam, device=device))
 
         G_recovered_loss_A = cycle_loss(fake_image_B2A, real_image_A)
@@ -259,22 +263,18 @@ for epoch in range(0, args.epochs):
         G_identity_loss_A = cycle_loss(fake_image_A2A, real_image_A)
         G_identity_loss_B = cycle_loss(fake_image_B2B, real_image_B)
 
-        G_real_loss_cam_A = identity_loss(fake_image_A_cam_output,
-                                          torch.ones_like(fake_image_A_cam_output, device=device))
-        G_fake_loss_cam_A = identity_loss(fake_image_A2A_cam_output,
-                                          torch.zeros_like(fake_image_A2A_cam_output, device=device))
-        G_cam_loss_A = G_real_loss_cam_A + G_fake_loss_cam_A
+        G_real_loss_A_cam = identity_loss(fake_image_A_cam, torch.ones_like(fake_image_A_cam, device=device))
+        G_fake_loss_A_cam = identity_loss(fake_output_A2A_cam, torch.zeros_like(fake_output_A2A_cam, device=device))
+        G_loss_A_cam = G_real_loss_A_cam + G_fake_loss_A_cam
 
-        G_real_loss_cam_B = identity_loss(fake_image_B_cam_output,
-                                          torch.ones_like(fake_image_B_cam_output, device=device))
-        G_fake_loss_cam_B = identity_loss(fake_image_B2B_cam_output,
-                                          torch.zeros_like(fake_image_B2B_cam_output, device=device))
-        G_cam_loss_B = G_real_loss_cam_B + G_fake_loss_cam_B
+        G_real_loss_B_cam = identity_loss(fake_image_B_cam, torch.ones_like(fake_image_B_cam, device=device))
+        G_fake_loss_B_cam = identity_loss(fake_output_B2B_cam, torch.zeros_like(fake_output_B2B_cam, device=device))
+        G_loss_B_cam = G_real_loss_B_cam + G_fake_loss_B_cam
 
-        G_adversarial_loss_A = G_adversarial_loss_GA + G_adversarial_loss_cam_GA + G_adversarial_loss_LA + G_adversarial_loss_cam_LA
-        G_adversarial_loss_B = G_adversarial_loss_GB + G_adversarial_loss_cam_GB + G_adversarial_loss_LB + G_adversarial_loss_cam_LB
-        loss_G_A = G_adversarial_loss_A + 10 * G_recovered_loss_A + 10 * G_identity_loss_A + 1000 * G_cam_loss_A
-        loss_G_B = G_adversarial_loss_B + 10 * G_recovered_loss_B + 10 * G_identity_loss_B + 1000 * G_cam_loss_B
+        G_adversarial_loss_A = G_adversarial_loss_GA + G_adversarial_loss_GA_cam + G_adversarial_loss_LA + G_adversarial_loss_LA_cam
+        G_adversarial_loss_B = G_adversarial_loss_GB + G_adversarial_loss_GB_cam + G_adversarial_loss_LB + G_adversarial_loss_LB_cam
+        loss_G_A = G_adversarial_loss_A + 10 * G_recovered_loss_A + 10 * G_identity_loss_A + 1000 * G_loss_A_cam
+        loss_G_B = G_adversarial_loss_B + 10 * G_recovered_loss_B + 10 * G_identity_loss_B + 1000 * G_loss_B_cam
 
         errG = loss_G_A + loss_G_B
         errG.backward()
