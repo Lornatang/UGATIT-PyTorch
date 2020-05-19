@@ -313,3 +313,7 @@ for epoch in range(0, args.epochs):
     torch.save(netD_B.state_dict(), f"weights/{args.dataset}/netD_B_epoch_{epoch}.pth")
     torch.save(netL_A.state_dict(), f"weights/{args.dataset}/netL_A_epoch_{epoch}.pth")
     torch.save(netL_B.state_dict(), f"weights/{args.dataset}/netL_B_epoch_{epoch}.pth")
+
+    # Update learning rates
+    lr_scheduler_G.step()
+    lr_scheduler_D.step()
