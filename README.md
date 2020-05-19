@@ -65,6 +65,8 @@ $ cd data/
 $ bash get_dataset.sh
 ```
 
+国内用户可以访问---> 网址：[百度云](https://pan.baidu.com/s/10PPBCyU2Yx0444i9k1ENmw) 密码: `yk31`
+
 ### Test (e.g selfie2anime)
 
 Using pre training model to generate pictures.
