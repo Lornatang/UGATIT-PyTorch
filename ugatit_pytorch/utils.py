@@ -11,25 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-
 import cv2
 import numpy as np
 import torch
 
 
-def merge(images, size):
-    h, w = images.shape[1], images.shape[2]
-    img = np.zeros((h * size[0], w * size[1], 3))
-    for idx, image in enumerate(images):
-        i = idx % size[1]
-        j = idx // size[1]
-        img[h * j:h * (j + 1), w * i:w * (i + 1), :] = image
-
-    return img
-
-
-def str2bool(x):
-    return x.lower() in 'true'
+def bgr2rgb(x):
+    return cv2.cvtColor(x, cv2.COLOR_RGB2BGR)
 
 
 def cam(x, size=256):
@@ -41,6 +29,10 @@ def cam(x, size=256):
     return cam_img / 255.0
 
 
+def denorm(x):
+    return x * 0.5 + 0.5
+
+
 def imagenet_norm(x):
     mean = [0.485, 0.456, 0.406]
     std = [0.299, 0.224, 0.225]
@@ -49,13 +41,20 @@ def imagenet_norm(x):
     return (x - mean) / std
 
 
-def denorm(x):
-    return x * 0.5 + 0.5
+def merge(images, size):
+    image_height, image_width = images.shape[1], images.shape[2]
+    image = np.zeros((image_height * size[0], image_width * size[1], 3))
+    for index, image in enumerate(images):
+        i = index % size[1]
+        j = index // size[1]
+        image[image_height * j:image_height * (j + 1), image_width * i:image_width * (i + 1), :] = image
+
+    return image
+
+
+def str2bool(x):
+    return x.lower() in 'true'
 
 
 def tensor2numpy(x):
     return x.detach().cpu().numpy().transpose(1, 2, 0)
-
-
-def RGB2BGR(x):
-    return cv2.cvtColor(x, cv2.COLOR_RGB2BGR)
