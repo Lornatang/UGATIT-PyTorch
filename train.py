@@ -26,8 +26,8 @@ import torchvision.transforms as transforms
 from ugatit_pytorch import Discriminator
 from ugatit_pytorch import Generator
 from ugatit_pytorch import ImageFolder
-from ugatit_pytorch import bgr2rgb
 from ugatit_pytorch import RhoClipper
+from ugatit_pytorch import bgr2rgb
 from ugatit_pytorch import cam
 from ugatit_pytorch import denorm
 from ugatit_pytorch import tensor2numpy
@@ -55,6 +55,8 @@ parser.add_argument("--lr", type=float, default=0.0001,
 parser.add_argument("--weight-decay", type=float, default=0.0001, help="The weight decay")
 parser.add_argument("-p", "--print-freq", default=1000, type=int,
                     metavar="N", help="Print frequency. (default:1000)")
+parser.add_argument("-s", "--save-freq", default=100000, type=int,
+                    metavar="N", help="Save frequency. (default:100000)")
 parser.add_argument("--cuda", action="store_true", help="Enables cuda")
 parser.add_argument("--netG_A2B", default="", help="path to netG_A2B (to continue training)")
 parser.add_argument("--netG_B2A", default="", help="path to netG_B2A (to continue training)")
@@ -294,11 +296,10 @@ for step in range(start_iter, args.iteration + 1):
     netG_B2A.apply(Rho_clipper)
 
     print(f"[{step:5d}/{args.iteration:5d}] "
-          f"time: {time.time() - start_time:4.4f}s "
+          f"use time: {time.time() - start_time:4.4f}s "
           f"d_loss: {errD.item():.8f} "
           f"g_loss: {errG.item():.8f}.")
     if step % args.print_freq == 0:
-        train_sample_num = 5
         A2B = np.zeros((args.image_size * 7, 0, 3))
         B2A = np.zeros((args.image_size * 7, 0, 3))
 
@@ -330,10 +331,11 @@ for step in range(start_iter, args.iteration + 1):
         cv2.imwrite(os.path.join(args.outf, args.dataset, "B", f"{step:07d}.png"), A2B * 255.0)
         cv2.imwrite(os.path.join(args.outf, args.dataset, "A", f"{step:07d}.png"), B2A * 255.0)
 
+    if step % args.save_freq == 0:
         # do check pointing
-        torch.save(netG_A2B.state_dict(), f"weights/netG_A2B.pth")
-        torch.save(netG_B2A.state_dict(), f"weights/netG_B2A.pth")
-        torch.save(netD_A.state_dict(), f"weights/netD_A.pth")
-        torch.save(netD_B.state_dict(), f"weights/netD_B.pth")
-        torch.save(netL_A.state_dict(), f"weights/netL_A.pth")
-        torch.save(netL_B.state_dict(), f"weights/netL_B.pth")
+        torch.save(netG_A2B.state_dict(), f"weights/{args.dataset}/netG_A2B_{step}.pth")
+        torch.save(netG_B2A.state_dict(), f"weights/{args.dataset}/netG_B2A_{step}.pth")
+        torch.save(netD_A.state_dict(), f"weights/{args.dataset}/netD_A_{step}.pth")
+        torch.save(netD_B.state_dict(), f"weights/{args.dataset}/netD_B_{step}.pth")
+        torch.save(netL_A.state_dict(), f"weights/{args.dataset}/netL_A_{step}.pth")
+        torch.save(netL_B.state_dict(), f"weights/{args.dataset}/netL_B_{step}.pth")
