@@ -1,4 +1,4 @@
-# UGATIT_PyTorch
+# UGATIT-PyTorch
 
 ### Overview
 
@@ -13,9 +13,9 @@ This repository contains an op-for-op PyTorch reimplementation of [U-GAT-IT: Uns
    * [Clone and install requirements](#clone-and-install-requirements)
    * [Download pretrained weights](#download-pretrained-weights)
    * [Download dataset](#download-dataset)
-4. [Test](#test)
+4. [Test](#test-eg-selfie2anime)
 5. [Train](#train)
-   * [Example (horse2zebra)](#example-horse2zebra)
+   * [Example](#example-eg-selfie2anime)
 6. [Contributing](#contributing) 
 7. [Credit](#credit)
 
@@ -46,8 +46,8 @@ and if it's 0, it's not real.
 #### Clone and install requirements
 
 ```bash
-$ git clone https://github.com/Lornatang/UGATIT_PyTorch
-$ cd UGATIT_PyTorch/
+$ git clone https://github.com/Lornatang/UGATIT-PyTorch
+$ cd UGATIT-PyTorch/
 $ pip3 install -r requirements.txt
 ```
 
