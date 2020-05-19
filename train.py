@@ -37,20 +37,19 @@ parser.add_argument("--dataset", type=str, default="selfie2anime",
                          "cezanne2photo, ukiyoe2photo, vangogh2photo, selfie2anime]")
 parser.add_argument("--light", action="store_true",
                     help="Enables U-GAT-IT light version, else Enables U-GAT-IT full version.")
-parser.add_argument("--epochs", default=300, type=int, metavar="N",
-                    help="number of total epochs to run. (default:300)")
+parser.add_argument("--epochs", default=200, type=int, metavar="N",
+                    help="number of total epochs to run. (default:200)")
 parser.add_argument("--image-size", type=int, default=256,
                     help="Size of the data crop (squared assumed). (default:256)")
-parser.add_argument("--decay_epochs", type=int, default=150,
-                    help="epoch to start linearly decaying the learning rate to 0. (default:150)")
+parser.add_argument("--decay_epochs", type=int, default=100,
+                    help="epoch to start linearly decaying the learning rate to 0. (default:100)")
 parser.add_argument("-b", "--batch-size", default=1, type=int,
                     metavar="N",
                     help="mini-batch size (default: 1), this is the total "
                          "batch size of all GPUs on the current node when "
                          "using Data Parallel or Distributed Data Parallel.")
-parser.add_argument("--lr", type=float, default=0.0001,
-                    help="Learning rate. (default:0.0001)")
-parser.add_argument("--weight-decay", type=float, default=0.0001, help="The weight decay")
+parser.add_argument("--lr", type=float, default=0.0002,
+                    help="Learning rate. (default:0.0002)")
 parser.add_argument("-p", "--print-freq", default=100, type=int,
                     metavar="N", help="Print frequency. (default:100)")
 parser.add_argument("--cuda", action="store_true", help="Enables cuda")
@@ -144,11 +143,10 @@ adversarial_loss = torch.nn.MSELoss().to(device)
 identity_loss = torch.nn.BCEWithLogitsLoss().to(device)
 
 # Optimizers
-optimizer_G = torch.optim.Adam(itertools.chain(netG_A2B.parameters(), netG_B2A.parameters()),
-                               lr=args.lr, betas=(0.5, 0.999), weight_decay=args.weight_decay)
-optimizer_D = torch.optim.Adam(itertools.chain(netD_A.parameters(), netD_B.parameters(),
-                                               netL_A.parameters(), netL_B.parameters()),
-                               lr=args.lr, betas=(0.5, 0.999), weight_decay=args.weight_decay)
+optimizer_G = torch.optim.Adam(itertools.chain(netG_A2B.parameters(), netG_B2A.parameters()), lr=args.lr,
+                               betas=(0.5, 0.999))
+optimizer_D = torch.optim.Adam(itertools.chain(netD_A.parameters(), netD_B.parameters(), netL_A.parameters(),
+                                               netL_B.parameters()), lr=args.lr, betas=(0.5, 0.999))
 
 lr_lambda = DecayLR(args.epochs, 0, args.decay_epochs).step
 lr_scheduler_G = torch.optim.lr_scheduler.LambdaLR(optimizer_G, lr_lambda=lr_lambda)

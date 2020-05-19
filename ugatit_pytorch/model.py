@@ -88,15 +88,8 @@ class Discriminator(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, image_size=256, light=False):
-        """ Standard generator model.
-
-        Args:
-            light: Whether to reduce the number of cells in the full connection layer. (default: `False`)
-        """
+    def __init__(self, image_size=256):
         super(Generator, self).__init__()
-        self.light = light
-
         down_layer = [
             nn.ReflectionPad2d(3),
             nn.Conv2d(3, 64, 7, 1, 0, bias=False),
@@ -127,16 +120,13 @@ class Generator(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
         # Gamma, Beta block
-        if self.light:
-            fc = [nn.Linear(256, 256, bias=False),
-                  nn.ReLU(inplace=True),
-                  nn.Linear(256, 256, bias=False),
-                  nn.ReLU(inplace=True)]
-        else:
-            fc = [nn.Linear(image_size * image_size * 16, 256, bias=False),
-                  nn.ReLU(inplace=True),
-                  nn.Linear(256, 256, bias=False),
-                  nn.ReLU(inplace=True)]
+        fc = [
+            nn.Linear(image_size * image_size * 16, 256, bias=False),
+            nn.ReLU(inplace=True),
+            nn.Linear(256, 256, bias=False),
+            nn.ReLU(inplace=True)
+        ]
+
         self.gamma = nn.Linear(256, 256, bias=False)
         self.beta = nn.Linear(256, 256, bias=False)
 
@@ -183,11 +173,7 @@ class Generator(nn.Module):
         x = torch.cat([gap, gmp], 1)
         x = self.relu(self.conv1x1(x))
 
-        if self.light:
-            x_ = torch.nn.functional.adaptive_avg_pool2d(x, 1)
-            x_ = self.fc(x_.view(x_.shape[0], -1))
-        else:
-            x_ = self.fc(x.view(x.shape[0], -1))
+        x_ = self.fc(x.view(x.shape[0], -1))
         gamma, beta = self.gamma(x_), self.beta(x_)
 
         for i in range(4):
