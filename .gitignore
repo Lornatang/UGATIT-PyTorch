@@ -131,6 +131,7 @@ dmypy.json
 
 data/selfie2anime
 data/selfie2anime.zip
+data/selfie2anime.tgz
 
 outputs
 weights/*.pth
