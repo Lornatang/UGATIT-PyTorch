@@ -128,3 +128,10 @@ dmypy.json
 .vscode
 
 *.DS_Store
+
+data/selfie2anime
+data/selfie2anime.zip
+
+outputs
+weights/*.pth
+weights/selfie2anime
