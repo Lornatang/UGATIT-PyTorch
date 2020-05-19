@@ -12,7 +12,6 @@
 # limitations under the License.
 # ==============================================================================
 from .dataset import ImageDataset
-from .dataset import ImageFolder
 from .model import AdaILN
 from .model import Discriminator
 from .model import Generator
@@ -24,7 +23,6 @@ from .optim import DecayLR
 
 __all__ = [
     "ImageDataset",
-    "ImageFolder",
     "AdaILN",
     "Discriminator",
     "Generator",
