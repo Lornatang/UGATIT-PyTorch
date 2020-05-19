@@ -11,27 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-from .dataset import ImageDataset
-from .dataset import ImageFolder
-from .model import AdaILN
-from .model import Discriminator
-from .model import Generator
-from .model import ILN
-from .model import ResNetAdaILNBlock
-from .model import ResNetBlock
-from .model import RhoClipper
-from .optim import DecayLR
 
-__all__ = [
-    "ImageDataset",
-    "ImageFolder",
-    "AdaILN",
-    "Discriminator",
-    "Generator",
-    "ILN",
-    "ResNetAdaILNBlock",
-    "ResNetBlock",
-    "RhoClipper",
-    "DecayLR",
 
-]
+class DecayLR:
+    def __init__(self, epochs, offset, decay_epochs):
+        epoch_flag = epochs - decay_epochs
+        assert (epoch_flag > 0), "Decay must start before the training session ends!"
+        self.epochs = epochs
+        self.offset = offset
+        self.decay_epochs = decay_epochs
+
+    def step(self, epoch):
+        return 1.0 - max(0, epoch + self.offset - self.decay_epochs) / (
+                self.epochs - self.decay_epochs)

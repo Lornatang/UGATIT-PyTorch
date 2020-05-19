@@ -81,12 +81,10 @@ class Discriminator(nn.Module):
         x = torch.cat([gap, gmp], 1)
         x = self.leaky_relu(self.conv1x1(x))
 
-        heatmap = torch.sum(x, dim=1, keepdim=True)
-
         x = self.pad(x)
         out = self.conv(x)
 
-        return out, cam_logit, heatmap
+        return out, cam_logit
 
 
 class Generator(nn.Module):
@@ -185,8 +183,6 @@ class Generator(nn.Module):
         x = torch.cat([gap, gmp], 1)
         x = self.relu(self.conv1x1(x))
 
-        heatmap = torch.sum(x, dim=1, keepdim=True)
-
         if self.light:
             x_ = torch.nn.functional.adaptive_avg_pool2d(x, 1)
             x_ = self.fc(x_.view(x_.shape[0], -1))
@@ -198,7 +194,7 @@ class Generator(nn.Module):
             x = getattr(self, "ResNetAdaILNBlock_" + str(i + 1))(x, gamma, beta)
         out = self.up_layer(x)
 
-        return out, cam_logit, heatmap
+        return out, cam_logit
 
 
 class ILN(nn.Module):
