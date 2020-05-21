@@ -93,8 +93,7 @@ dataset = ImageDataset(root=os.path.join(args.dataroot, args.dataset),
                        ]),
                        unaligned=True)
 
-dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size,
-                                         shuffle=True, pin_memory=True)
+dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, shuffle=True, pin_memory=True)
 
 try:
     os.makedirs(os.path.join(args.outf, args.dataset, "A"))
