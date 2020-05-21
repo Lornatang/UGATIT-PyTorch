@@ -70,10 +70,16 @@ $ bash get_dataset.sh
 
 ### Test (e.g selfie2anime)
 
-Using pre training model to generate pictures.
+The following commands can be used to test the whole test.
 
 ```bash
-$ python3 test.py --cuda
+$ python3 test.py --dataset selfie2anime --image-size 96 --cuda
+```
+
+For single image processing, use the following command.
+
+```bash
+$ python3 test_image.py --file assets/testA_2.jpg --model-name selfie2anime --image-size 96 --cuda
 ```
 
 Selfie to Anime
@@ -100,24 +106,19 @@ usage: train.py [-h] [--dataroot DATAROOT] [--dataset DATASET] [--light]
 #### Example (e.g selfie2anime)
 
 ```bash
-$ python3 train.py --dataset selfie2anime --cuda
+$ python3 train.py --dataset selfie2anime --image-size 96 --cuda
 ```
 
-If your CUDA memory is less than 12G, please use.
-```bash
-$ python3 train.py --dataset selfie2anime --cuda --light
-```
-
-If you want to load weights that you've trained before, run the following command (e.g step 10000).
+If you want to load weights that you've trained before, run the following command (e.g epoch 100).
 
 ```bash
-$ python3 train.py --dataset selfie2anime --cuda \
-    --netG_A2B weights/selfie2anime/netG_A2B_epoch_*.pth \
-    --netG_B2A weights/selfie2anime/netG_B2A_epoch_*.pth \
-    --netD_A weights/selfie2anime/netD_A_epoch_*.pth \
-    --netD_B weights/selfie2anime/netD_B_epoch_*.pth \
-    --netL_A weights/selfie2anime/netL_A_epoch_*.pth \
-    --netL_B weights/selfie2anime/netL_B_epoch_*.pth
+$ python3 train.py --dataset selfie2anime --image-size 96 \
+    --netG_A2B weights/selfie2anime/netG_A2B_epoch_100.pth \
+    --netG_B2A weights/selfie2anime/netG_B2A_epoch_100.pth \
+    --netD_A weights/selfie2anime/netD_A_epoch_100.pth \
+    --netD_B weights/selfie2anime/netD_B_epoch_100.pth \
+    --netL_A weights/selfie2anime/netL_A_epoch_100.pth \
+    --netL_B weights/selfie2anime/netL_B_epoch_100.pth --cuda
 ```
 
 ### Contributing
