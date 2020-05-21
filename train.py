@@ -224,16 +224,16 @@ for epoch in range(0, args.epochs):
         fake_image_B, fake_image_B_cam = netG_A2B(real_image_A)
         fake_image_A, fake_image_A_cam = netG_B2A(real_image_B)
 
-        fake_image_B2A, _ = netG_B2A(fake_image_B.detach())
-        fake_image_A2B, _ = netG_A2B(fake_image_A.detach())
+        fake_image_B2A, _ = netG_B2A(fake_image_B)
+        fake_image_A2B, _ = netG_A2B(fake_image_A)
 
         fake_image_A2A, fake_output_A2A_cam = netG_B2A(real_image_A)
         fake_image_B2B, fake_output_B2B_cam = netG_A2B(real_image_B)
 
-        fake_output_GA, fake_output_GA_cam = netD_A(fake_image_A.detach())
-        fake_output_LA, fake_output_LA_cam = netL_A(fake_image_A.detach())
-        fake_output_GB, fake_output_GB_cam = netD_B(fake_image_B.detach())
-        fake_output_LB, fake_output_LB_cam = netL_B(fake_image_B.detach())
+        fake_output_GA, fake_output_GA_cam = netD_A(fake_image_A)
+        fake_output_LA, fake_output_LA_cam = netL_A(fake_image_A)
+        fake_output_GB, fake_output_GB_cam = netD_B(fake_image_B)
+        fake_output_LB, fake_output_LB_cam = netL_B(fake_image_B)
 
         G_adversarial_loss_GA = adversarial_loss(fake_output_GA, torch.ones_like(fake_output_GA, device=device))
         G_adversarial_loss_GA_cam = adversarial_loss(fake_output_GA_cam,
