@@ -102,7 +102,13 @@ $ python3 train.py --dataset selfie2anime --cuda --light
 If you want to load weights that you've trained before, run the following command (e.g step 10000).
 
 ```bash
-$ python3 train.py --dataset selfie2anime --cuda --netG_A2B weights/selfie2anime/netG_A2B_100000.pth --netG_B2A weights/selfie2anime/netG_B2A_100000.pth --netD_A weights/selfie2anime/netD_A_100000.pth --netD_B weights/selfie2anime/netD_B_100000.pth --netL_A weights/selfie2anime/netL_A_100000.pth --netL_B weights/selfie2anime/netL_B_100000.pth
+$ python3 train.py --dataset selfie2anime --cuda \
+    --netG_A2B weights/selfie2anime/netG_A2B_epoch_*.pth \
+    --netG_B2A weights/selfie2anime/netG_B2A_epoch_*.pth \
+    --netD_A weights/selfie2anime/netD_A_epoch_*.pth \
+    --netD_B weights/selfie2anime/netD_B_epoch_*.pth \
+    --netL_A weights/selfie2anime/netL_A_epoch_*.pth \
+    --netL_B weights/selfie2anime/netL_B_epoch_*.pth
 ```
 
 ### Contributing
