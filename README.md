@@ -54,6 +54,7 @@ $ pip3 install -r requirements.txt
 #### Download pretrained weights
 
 ```bash
+# At present, I only provide the pre training model with image size equal to 96.
 $ cd weights/
 $ bash download_weights.sh
 ```
@@ -74,6 +75,14 @@ Using pre training model to generate pictures.
 ```bash
 $ python3 test.py --cuda
 ```
+
+Selfie to Anime
+
+<img src="assets/testA_1.jpg" alt=""><img src="assets/result_1.jpg" alt="">
+<img src="assets/testA_2.jpg" alt=""><img src="assets/result_2.jpg" alt="">
+<img src="assets/testA_3.jpg" alt=""><img src="assets/result_3.jpg" alt="">
+<img src="assets/testA_4.jpg" alt=""><img src="assets/result_4.jpg" alt="">
+<img src="assets/testA_5.jpg" alt=""><img src="assets/result_5.jpg" alt="">
 
 ### Train
 
