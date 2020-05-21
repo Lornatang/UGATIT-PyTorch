@@ -51,7 +51,7 @@ cudnn.benchmark = True
 if torch.cuda.is_available() and not args.cuda:
     print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
-device = torch.device("cuda:1" if args.cuda else "cpu")
+device = torch.device("cuda:0" if args.cuda else "cpu")
 
 # create model
 model = Generator(image_size=args.image_size).to(device)
