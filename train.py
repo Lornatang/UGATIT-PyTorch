@@ -35,8 +35,6 @@ parser.add_argument("--dataset", type=str, default="selfie2anime",
                     help="dataset name.  (default:`selfie2anime`)"
                          "Option: [apple2orange, summer2winter_yosemite, horse2zebra, monet2photo, "
                          "cezanne2photo, ukiyoe2photo, vangogh2photo, selfie2anime]")
-parser.add_argument("--light", action="store_true",
-                    help="Enables U-GAT-IT light version, else Enables U-GAT-IT full version.")
 parser.add_argument("--epochs", default=200, type=int, metavar="N",
                     help="number of total epochs to run. (default:200)")
 parser.add_argument("--image-size", type=int, default=256,
@@ -48,10 +46,8 @@ parser.add_argument("-b", "--batch-size", default=1, type=int,
                     help="mini-batch size (default: 1), this is the total "
                          "batch size of all GPUs on the current node when "
                          "using Data Parallel or Distributed Data Parallel.")
-parser.add_argument("--lr", type=float, default=0.0002,
-                    help="Learning rate. (default:0.0002)")
-parser.add_argument("-p", "--print-freq", default=100, type=int,
-                    metavar="N", help="Print frequency. (default:100)")
+parser.add_argument("--lr", type=float, default=0.0002, help="Learning rate. (default:0.0002)")
+parser.add_argument("-p", "--print-freq", default=100, type=int, metavar="N", help="Print frequency. (default:100)")
 parser.add_argument("--cuda", action="store_true", help="Enables cuda")
 parser.add_argument("--netG_A2B", default="", help="path to netG_A2B (to continue training)")
 parser.add_argument("--netG_B2A", default="", help="path to netG_B2A (to continue training)")
@@ -59,10 +55,8 @@ parser.add_argument("--netD_A", default="", help="path to netD_A (to continue tr
 parser.add_argument("--netD_B", default="", help="path to netD_B (to continue training)")
 parser.add_argument("--netL_A", default="", help="path to netL_A (to continue training)")
 parser.add_argument("--netL_B", default="", help="path to netL_B (to continue training)")
-parser.add_argument("--outf", default="./outputs",
-                    help="folder to output images. (default:`./outputs`).")
-parser.add_argument("--manualSeed", type=int,
-                    help="Seed for initializing training. (default:none)")
+parser.add_argument("--outf", default="./outputs", help="folder to output images. (default:`./outputs`).")
+parser.add_argument("--manualSeed", type=int, help="Seed for initializing training. (default:none)")
 
 args = parser.parse_args()
 print(args)
@@ -118,10 +112,10 @@ device = torch.device("cuda:0" if args.cuda else "cpu")
 # create model
 netG_A2B = Generator(image_size=args.image_size).to(device)
 netG_B2A = Generator(image_size=args.image_size).to(device)
-netD_A = Discriminator(5).to(device)
-netD_B = Discriminator(5).to(device)
-netL_A = Discriminator(7).to(device)
-netL_B = Discriminator(7).to(device)
+netD_A = Discriminator(n_layers=5).to(device)
+netD_B = Discriminator(n_layers=5).to(device)
+netL_A = Discriminator(n_layers=7).to(device)
+netL_B = Discriminator(n_layers=7).to(device)
 
 # load model
 if args.netG_A2B != "":
@@ -315,3 +309,11 @@ for epoch in range(0, args.epochs):
     # Update learning rates
     lr_scheduler_G.step()
     lr_scheduler_D.step()
+
+# save last check pointing
+torch.save(netG_A2B.state_dict(), f"weights/{args.dataset}/netG_A2B.pth")
+torch.save(netG_B2A.state_dict(), f"weights/{args.dataset}/netG_B2A.pth")
+torch.save(netD_A.state_dict(), f"weights/{args.dataset}/netD_A.pth")
+torch.save(netD_B.state_dict(), f"weights/{args.dataset}/netD_B.pth")
+torch.save(netL_A.state_dict(), f"weights/{args.dataset}/netL_A.pth")
+torch.save(netL_B.state_dict(), f"weights/{args.dataset}/netL_B.pth")
