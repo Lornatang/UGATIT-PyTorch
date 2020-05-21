@@ -25,7 +25,8 @@ from torchvision.transforms import ToTensor, Normalize, Resize
 from ugatit_pytorch import Generator
 
 parser = argparse.ArgumentParser(description="PyTorch Generate Realistic Animation Face.")
-parser.add_argument("--file", type=str, default="assets/testA_1.jpg", help="Selfie image name.")
+parser.add_argument("--file", type=str, default="assets/testA_1.jpg",
+                    help="Selfie image name. (default:`assets/testA_1.jpg`)")
 parser.add_argument("--model-name", type=str, default="selfie2anime",
                     help="dataset name.  (default:`selfie2anime`)"
                          "Option: [apple2orange, summer2winter_yosemite, horse2zebra, monet2photo, "
