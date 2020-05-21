@@ -94,14 +94,43 @@ Selfie to Anime
 ### Train
 
 ```text
-usage: train.py [-h] [--dataroot DATAROOT] [--dataset DATASET] [--light]
-                [--epochs N] [--image-size IMAGE_SIZE]
-                [--decay_epochs DECAY_EPOCHS] [-b N] [--lr LR]
-                [--weight-decay WEIGHT_DECAY] [-p N] [--cuda]
-                [--netG_A2B NETG_A2B] [--netG_B2A NETG_B2A] [--netD_A NETD_A]
-                [--netD_B NETD_B] [--netL_A NETL_A] [--netL_B NETL_B]
-                [--outf OUTF] [--manualSeed MANUALSEED]
+usage: train.py [-h] [--dataroot DATAROOT] [--dataset DATASET] [--epochs N]
+                [--image-size IMAGE_SIZE] [--decay_epochs DECAY_EPOCHS] [-b N]
+                [--lr LR] [-p N] [--cuda] [--netG_A2B NETG_A2B]
+                [--netG_B2A NETG_B2A] [--netD_A NETD_A] [--netD_B NETD_B]
+                [--netL_A NETL_A] [--netL_B NETL_B] [--outf OUTF]
+                [--manualSeed MANUALSEED]
 
+PyTorch Generate Realistic Animation Face.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --dataroot DATAROOT   Path to datasets. (default:`./data`)
+  --dataset DATASET     dataset name. (default:`selfie2anime`)Option:
+                        [apple2orange, summer2winter_yosemite, horse2zebra,
+                        monet2photo, cezanne2photo, ukiyoe2photo,
+                        vangogh2photo, selfie2anime]
+  --epochs N            number of total epochs to run. (default:200)
+  --image-size IMAGE_SIZE
+                        Size of the data crop (squared assumed). (default:256)
+  --decay_epochs DECAY_EPOCHS
+                        epoch to start linearly decaying the learning rate to
+                        0. (default:100)
+  -b N, --batch-size N  mini-batch size (default: 1), this is the total batch
+                        size of all GPUs on the current node when using Data
+                        Parallel or Distributed Data Parallel.
+  --lr LR               Learning rate. (default:0.0002)
+  -p N, --print-freq N  Print frequency. (default:100)
+  --cuda                Enables cuda
+  --netG_A2B NETG_A2B   path to netG_A2B (to continue training)
+  --netG_B2A NETG_B2A   path to netG_B2A (to continue training)
+  --netD_A NETD_A       path to netD_A (to continue training)
+  --netD_B NETD_B       path to netD_B (to continue training)
+  --netL_A NETL_A       path to netL_A (to continue training)
+  --netL_B NETL_B       path to netL_B (to continue training)
+  --outf OUTF           folder to output images. (default:`./outputs`).
+  --manualSeed MANUALSEED
+                        Seed for initializing training. (default:none)
 ```
 
 #### Example (e.g selfie2anime)
