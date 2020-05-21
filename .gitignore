@@ -134,5 +134,6 @@ data/selfie2anime.zip
 data/selfie2anime.tgz
 
 outputs
+results
 weights/*.pth
 weights/selfie2anime
