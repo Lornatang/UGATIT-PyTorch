@@ -1,24 +1,16 @@
 #!/bin/bash
 
-wget https://drive.google.com/uc?export=download&confirm=pO_n&id=1xOWj1UVgp6NKMT3HbPhBbtq2A4EDkghF
-mkdir selfie2anime
-mkdir selfie2anime/train
-mkdir selfie2anime/test
-mkdir selfie2anime/train/A
-mkdir selfie2anime/train/B
-mkdir selfie2anime/test/A
-mkdir selfie2anime/test/B
+URL = https://drive.google.com/uc?export=download&confirm=pO_n&id=1xOWj1UVgp6NKMT3HbPhBbtq2A4EDkghF
+ZIP_FILE=selfie2anime.zip
+TARGET_DIR=selfie2anime
+wget ${URL}
+unzip ${ZIP_FILE}
+rm ${ZIP_FILE}
 
-unzip selfie2anime.zip
-
-mv trainA/* selfie2anime/train/A
-mv trainB/* selfie2anime/train/B
-mv testA/* selfie2anime/test/A
-mv testB/* selfie2anime/test/A
-
-rm -rf trainA
-rm -rf trainB
-rm -rf testA
-rm -rf testB
-
-rm selfie2anime.zip
+# Adapt to project expected directory heriarchy
+mkdir "$TARGET_DIR"
+mkdir -p "$TARGET_DIR/train" "$TARGET_DIR/test"
+mv "trainA" "$TARGET_DIR/train/A"
+mv "trainB" "$TARGET_DIR/train/B"
+mv "testA" "$TARGET_DIR/test/A"
+mv "testB" "$TARGET_DIR/test/B"
