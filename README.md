@@ -24,23 +24,11 @@ This repository contains an op-for-op PyTorch reimplementation of [U-GAT-IT: Uns
 
 If you're new to U-GAT-IT, here's an abstract straight from the paper:
 
-We propose a novel method for unsupervised image-to-image translation, which incorporates a new attention module 
-and a new learnable normalization function in an end-to-end manner. The attention module guides our model to focus 
-on more important regions distinguishing between source and target domains based on the attention map obtained 
-by the auxiliary classifier. Unlike previous attention-based methods which cannot handle the geometric changes 
-between domains, our model can translate both images requiring holistic changes and images requiring large shape 
-changes. Moreover, our new AdaLIN (Adaptive Layer-Instance Normalization) function helps our attention-guided 
-model to flexibly control the amount of change in shape and texture by learned parameters depending on datasets. 
-Experimental results show the superiority of the proposed method compared to the existing state-of-the-art 
-models with a fixed network architecture and hyper-parameters.
+We propose a novel method for unsupervised image-to-image translation, which incorporates a new attention module and a new learnable normalization function in an end-to-end manner. The attention module guides our model to focus on more important regions distinguishing between source and target domains based on the attention map obtained by the auxiliary classifier. Unlike previous attention-based methods which cannot handle the geometric changes between domains, our model can translate both images requiring holistic changes and images requiring large shape changes. Moreover, our new AdaLIN (Adaptive Layer-Instance Normalization) function helps our attention-guided model to flexibly control the amount of change in shape and texture by learned parameters depending on datasets. Experimental results show the superiority of the proposed method compared to the existing state-of-the-art models with a fixed network architecture and hyper-parameters.
 
 ### Model Description
 
-We have two networks, G (Generator) and D (Discriminator).The Generator is a network for generating images. 
-It receives a random noise z and generates images from this noise, which is called G(z).Discriminator 
-is a discriminant network that discriminates whether an image is real. The input is x, x is a picture, 
-and the output is D of x is the probability that x is a real picture, and if it's 1, it's 100% real, 
-and if it's 0, it's not real.
+We have two networks, G (Generator) and D (Discriminator).The Generator is a network for generating images. It receives a random noise z and generates images from this noise, which is called G(z).Discriminator is a discriminant network that discriminates whether an image is real. The input is x, x is a picture, and the output is D of x is the probability that x is a real picture, and if it's 1, it's 100% real, and if it's 0, it's not real.
 
 ### Installation
 
