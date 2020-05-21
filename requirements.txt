@@ -1,2 +1,5 @@
 torch
 torchvision
+opnevc-python
+tqdm
+pillow
