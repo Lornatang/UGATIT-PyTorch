@@ -16,6 +16,7 @@ This repository contains an op-for-op PyTorch reimplementation of [U-GAT-IT: Uns
 4. [Test](#test-eg-selfie2anime)
 5. [Train](#train)
    * [Example](#example-eg-selfie2anime)
+   * [Resume training](#resume-training-eg-epoch-100)
 6. [Contributing](#contributing) 
 7. [Credit](#credit)
 
@@ -109,7 +110,9 @@ usage: train.py [-h] [--dataroot DATAROOT] [--dataset DATASET] [--light]
 $ python3 train.py --dataset selfie2anime --image-size 96 --cuda
 ```
 
-If you want to load weights that you've trained before, run the following command (e.g epoch 100).
+#### Resume training (e.g epoch 100)
+
+If you want to load weights that you've trained before, run the following command.
 
 ```bash
 $ python3 train.py --dataset selfie2anime --image-size 96 \
