@@ -18,9 +18,9 @@ import time
 
 import torch.backends.cudnn as cudnn
 import torch.utils.data.distributed
+import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from PIL import Image
-from torchvision.transforms import ToTensor, Normalize, Resize
 
 from ugatit_pytorch import Generator
 
@@ -64,7 +64,10 @@ model.eval()
 
 # Load image
 image = Image.open(args.file)
-image = Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))(ToTensor()(Resize(args.image_size)(image))).unsqueeze(0)
+pre_process = transforms.Compose([transforms.Resize(args.image_size),
+                                  transforms.ToTensor(),
+                                  transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))])
+image = pre_process(image).unsqueeze(0)
 image = image.to(device)
 
 start = time.clock()
