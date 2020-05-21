@@ -135,5 +135,6 @@ data/selfie2anime.tgz
 
 outputs
 results
+assets/*.mp4
 weights/*.pth
 weights/selfie2anime
