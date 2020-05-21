@@ -32,8 +32,6 @@ parser.add_argument("--dataset", type=str, default="selfie2anime",
                     help="dataset name.  (default:`selfie2anime`)"
                          "Option: [apple2orange, summer2winter_yosemite, horse2zebra, monet2photo, "
                          "cezanne2photo, ukiyoe2photo, vangogh2photo, selfie2anime]")
-parser.add_argument("--light", action="store_true",
-                    help="Enables U-GAT-IT light version, else Enables U-GAT-IT full version.")
 parser.add_argument("--cuda", action="store_true", help="Enables cuda")
 parser.add_argument("--outf", default="./results",
                     help="folder to output images. (default: `./results`).")
@@ -70,7 +68,7 @@ dataset = ImageDataset(root=os.path.join(args.dataroot, args.dataset),
                        ]),
                        mode="test")
 
-dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
+dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, pin_memory=True)
 
 try:
     os.makedirs(os.path.join(args.outf, str(args.dataset), "A"))
@@ -104,7 +102,7 @@ for i, data in progress_bar:
     fake_image_A, _ = netG_B2A(real_image_B)
 
     # Save image files
-    vutils.save_image(fake_image_A, f"{args.outf}/{args.dataset}/A/{i + 1:04d}.png", normalize=True)
-    vutils.save_image(fake_image_B, f"{args.outf}/{args.dataset}/B/{i + 1:04d}.png", normalize=True)
+    vutils.save_image(fake_image_A.detach(), f"{args.outf}/{args.dataset}/A/{i + 1:04d}.png", normalize=True)
+    vutils.save_image(fake_image_B.detach(), f"{args.outf}/{args.dataset}/B/{i + 1:04d}.png", normalize=True)
 
     progress_bar.set_description(f"Generated images {i + 1} of {len(dataloader)}")
