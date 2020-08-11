@@ -1,5 +1,5 @@
 torch
 torchvision
-opnevc-python
+opencv-python
 tqdm
 pillow
